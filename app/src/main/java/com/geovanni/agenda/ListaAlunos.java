@@ -2,6 +2,8 @@ package com.geovanni.agenda;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class ListaAlunos extends AppCompatActivity {
 
@@ -9,5 +11,21 @@ public class ListaAlunos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
+
+        //Array lista de alunos
+
+        String[] alunos = {"Geovanni","Daniel", "Jefferson", "Gabriel"};
+
+        //Refenciar a activity onde a lista será exibida.
+
+        ListView viewListaAlunos = (ListView) findViewById(R.id.id_lista_alunos);
+
+        //Adicionar os alunos na lista
+        //android.R.layout.simple_list_item_1 = Lista Padrão Herdada do sys. Android.
+        // alunos Array criado acima
+
+        ArrayAdapter <String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, alunos);
+
+        viewListaAlunos.setAdapter(adapter);
     }
 }
