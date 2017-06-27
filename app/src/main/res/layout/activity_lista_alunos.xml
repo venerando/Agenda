@@ -21,5 +21,6 @@
         android:elevation="6dp"
         android:stateListAnimator="@null"
         android:background="@drawable/fundobotaoadd"
+        android:id="@+id/lista_aluno_adicionar"
         />
 </RelativeLayout>

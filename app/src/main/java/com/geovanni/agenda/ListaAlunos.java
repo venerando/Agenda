@@ -1,9 +1,14 @@
 package com.geovanni.agenda;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+
+import static android.R.attr.button;
 
 public class ListaAlunos extends AppCompatActivity {
 
@@ -27,5 +32,17 @@ public class ListaAlunos extends AppCompatActivity {
         ArrayAdapter <String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, alunos);
 
         viewListaAlunos.setAdapter(adapter);
+
+        //Navegando entre telas
+
+        Button botaoAdicionar = (Button) findViewById(R.id.lista_aluno_adicionar);
+
+        botaoAdicionar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ListaAlunos.this, FormularioActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
