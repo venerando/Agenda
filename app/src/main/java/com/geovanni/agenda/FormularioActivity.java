@@ -1,5 +1,6 @@
 package com.geovanni.agenda;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,9 @@ public class FormularioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(FormularioActivity.this, "Botão Clicado", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(FormularioActivity.this, ListaAlunos.class);
+                startActivity(intent);
             }
         });
     }
