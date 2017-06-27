@@ -23,8 +23,7 @@ public class FormularioActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(FormularioActivity.this, "Botão Clicado", Toast.LENGTH_LONG).show();
 
-                Intent intent = new Intent(FormularioActivity.this, ListaAlunos.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
