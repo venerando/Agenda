@@ -1,8 +1,11 @@
 package com.geovanni.agenda.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.geovanni.agenda.modelo.Aluno;
 
 /**
  * Created by Geovanni on 30/06/2017.
@@ -32,6 +35,22 @@ public class AlunoDAO extends SQLiteOpenHelper {
         String sql = "DROP TABLE IF EXISTS TB_ALUNO";
         db.execSQL(sql);
         onCreate(db);
+
+    }
+
+    //Preparando o INSERT
+
+    public void insere(Aluno aluno) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues dados = new ContentValues();
+        dados.put("nome", aluno.getNome());
+        dados.put("endereco", aluno.getEndereco());
+        dados.put("site", aluno.getSite());
+        dados.put("telefone", aluno.getTelefone());
+        dados.put("nota", aluno.getNota());
+
+        db.insert("TB_Aluno", null,dados);
 
     }
 }

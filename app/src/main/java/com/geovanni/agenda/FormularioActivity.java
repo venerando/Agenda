@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
 
 import java.util.zip.Inflater;
@@ -51,9 +52,15 @@ public class FormularioActivity extends AppCompatActivity {
                 //Recuperando informações digitadas pelo usuário através da Classe Aluno (Modelo)
                 Aluno aluno = helper.pegarAluno();
 
+                //Invocando o metódo com o insert para inserir os dados digitados pelo usuário no banco
+                AlunoDAO dao = new AlunoDAO(this);
+                dao.insere(aluno);
+                dao.close();
+
+                //Exibe uma mensagem de sucesso ao cadastrar
                 Toast.makeText(FormularioActivity.this, "Aluno " +aluno.getNome() + " salvo!", Toast.LENGTH_LONG).show();
 
-                //Faz retornar a tela anterior ao salava
+                //Faz retornar a tela anterior ao salvar
                 finish();
                 break;
         }
