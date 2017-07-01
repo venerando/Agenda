@@ -22,24 +22,6 @@ public class ListaAlunos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
 
-        //Alterando busca statica no array para busca no BD.
-
-        AlunoDAO dao = new AlunoDAO(this);
-        List <Aluno> alunos = dao.buscaAluno();
-        dao.close();
-
-        //Refenciar a activity onde a lista será exibida.
-
-        ListView viewListaAlunos = (ListView) findViewById(R.id.id_lista_alunos);
-
-        //Adicionar os alunos na lista
-        //android.R.layout.simple_list_item_1 = Lista Padrão Herdada do sys. Android.
-        // alunos Array criado acima
-
-        ArrayAdapter <Aluno> adapter = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunos);
-
-        viewListaAlunos.setAdapter(adapter);
-
         //Navegando entre telas
 
         Button botaoAdicionar = (Button) findViewById(R.id.lista_aluno_adicionar);
@@ -51,5 +33,31 @@ public class ListaAlunos extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    //Alterando busca statica no array para busca no BD.
+    private void carregaLista() {
+        AlunoDAO dao = new AlunoDAO(this);
+        List<Aluno> alunos = dao.buscaAluno();
+        dao.close();
+
+        //Refenciar a activity onde a lista será exibida.
+
+        ListView viewListaAlunos = (ListView) findViewById(R.id.id_lista_alunos);
+
+        //Adicionar os alunos na lista
+        //android.R.layout.simple_list_item_1 = Lista Padrão Herdada do sys. Android.
+        // alunos Array criado acima
+
+        ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunos);
+
+        viewListaAlunos.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Método criado clicando botão direito Refactor > Extract > Method
+        carregaLista();
     }
 }
