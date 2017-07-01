@@ -59,4 +59,19 @@ public class Aluno {
     public void setNota(Double nota) {
         this.nota = nota;
     }
+
+    ///Nunca esquecer do tostring para listar os dados
+
+    @Override
+    public String toString() {
+        return getNome();
+    }
+
+   /*
+    Concatenar para exibir id + nome na lista
+    @Override
+
+    public String toString() {
+        return getIdAluno() + " - " +getNome();
+    }*/
 }

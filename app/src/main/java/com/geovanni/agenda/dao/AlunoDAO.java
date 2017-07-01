@@ -2,10 +2,14 @@ package com.geovanni.agenda.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.geovanni.agenda.modelo.Aluno;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Geovanni on 30/06/2017.
@@ -52,5 +56,30 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
         db.insert("TB_Aluno", null,dados);
 
+    }
+
+    /// SELECT NO BANCO
+
+    public List<Aluno> buscaAluno() {
+        String sql = "SELECT * FROM TB_ALUNO;";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery(sql,null);
+
+        List<Aluno> alunos = new ArrayList<Aluno>();
+        while (c.moveToNext()){
+            Aluno aluno = new Aluno();
+
+            aluno.setIdAluno(c.getLong(c.getColumnIndex("id")));
+            aluno.setNome(c.getString(c.getColumnIndex("nome")));
+            aluno.setEndereco(c.getString(c.getColumnIndex("endereco")));
+            aluno.setSite(c.getString(c.getColumnIndex("site")));
+            aluno.setTelefone(c.getString(c.getColumnIndex("telefone")));
+            aluno.setNota(c.getDouble(c.getColumnIndex("nota")));
+
+            alunos.add(aluno);
+        }
+        //liberar memoria
+        c.close();
+        return alunos;
     }
 }
