@@ -15,7 +15,12 @@ import java.util.List;
 
 import static android.R.attr.button;
 
+
+
 public class ListaAlunos extends AppCompatActivity {
+
+    private ListView viewListaAlunos;
+    private Button botaoAdicionar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +29,7 @@ public class ListaAlunos extends AppCompatActivity {
 
         //Navegando entre telas
 
-        Button botaoAdicionar = (Button) findViewById(R.id.lista_aluno_adicionar);
+         botaoAdicionar = (Button) findViewById(R.id.lista_aluno_adicionar);
 
         botaoAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +48,7 @@ public class ListaAlunos extends AppCompatActivity {
 
         //Refenciar a activity onde a lista será exibida.
 
-        ListView viewListaAlunos = (ListView) findViewById(R.id.id_lista_alunos);
+       viewListaAlunos = (ListView) findViewById(R.id.id_lista_alunos);
 
         //Adicionar os alunos na lista
         //android.R.layout.simple_list_item_1 = Lista Padrão Herdada do sys. Android.
