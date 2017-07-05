@@ -95,6 +95,8 @@ public class ListaAlunos extends AppCompatActivity {
                 dao.close();
 
                 Toast.makeText(ListaAlunos.this, "Aluno " + aluno.getNome() + " deletado!", Toast.LENGTH_SHORT).show();
+
+                carregaLista();
                 return false;
             }
         });
