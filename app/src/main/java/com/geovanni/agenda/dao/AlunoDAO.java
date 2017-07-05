@@ -21,13 +21,13 @@ import java.util.List;
 public class AlunoDAO extends SQLiteOpenHelper {
 
     public AlunoDAO(Context context) {
-        super(context, "AgendaBD", null, 1);
+        super(context, "AgendaBD", null, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String sql = ("CREATE TABLE TB_ALUNO (id INTERGER PRIMARY KEY, nome TEXT NOT NULL, endereco TEXT, telefone TEXT, site TEXT, nota REAL);");
+        String sql = ("CREATE TABLE TB_ALUNO (id INTEGER PRIMARY KEY, nome TEXT NOT NULL, endereco TEXT, telefone TEXT, site TEXT, nota REAL);");
         db.execSQL(sql);
     }
 
@@ -48,12 +48,12 @@ public class AlunoDAO extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues dados = new ContentValues();
+
         dados.put("nome", aluno.getNome());
         dados.put("endereco", aluno.getEndereco());
         dados.put("site", aluno.getSite());
         dados.put("telefone", aluno.getTelefone());
         dados.put("nota", aluno.getNota());
-
         db.insert("TB_Aluno", null,dados);
 
     }
@@ -81,5 +81,13 @@ public class AlunoDAO extends SQLiteOpenHelper {
         //liberar memoria
         c.close();
         return alunos;
+    }
+
+    public void deletar(Aluno aluno) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String[] params = {aluno.getIdAluno().toString()};
+        db.delete("TB_ALUNO", "id = ?", params);
     }
 }
