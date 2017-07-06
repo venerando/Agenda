@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
 
@@ -29,6 +28,14 @@ public class FormularioActivity extends AppCompatActivity {
         //Instaciando FormulárioHelper Criado
         //Create Field "Helper"
         helper = new FormularioHelper(this);
+
+        //Recuperando dados do formulário de aluno já cadastrado
+        Intent intent = getIntent();
+        Aluno aluno = (Aluno) intent.getSerializableExtra("aluno");
+        if (aluno != null){
+            helper.preencherFormulario(aluno);
+        }
+
     }
 
     //Dgitar apenas onCreateOptionsMenu

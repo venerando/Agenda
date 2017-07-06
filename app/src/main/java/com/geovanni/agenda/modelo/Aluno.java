@@ -1,10 +1,12 @@
 package com.geovanni.agenda.modelo;
 
+import java.io.Serializable;
+
 /**
  * Created by Geovanni on 29/06/2017.
  */
 
-public class Aluno {
+public class Aluno implements Serializable{
     private Long idAluno;
     private String nome;
     private String endereco;

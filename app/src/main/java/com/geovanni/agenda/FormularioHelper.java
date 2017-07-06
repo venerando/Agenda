@@ -17,6 +17,7 @@ public class FormularioHelper {
     private final EditText campoSite;
     private final EditText campoTelefone;
     private final RatingBar campoNota;
+    private Aluno aluno;
 //FormularioActivity = Classe a qual será herdado o FindViewById
 
     public FormularioHelper(FormularioActivity activity ){
@@ -28,13 +29,13 @@ public class FormularioHelper {
         campoSite = (EditText) activity.findViewById(R.id.formulario_site);
         campoTelefone = (EditText) activity.findViewById(R.id.formulario_telefone);
         campoNota = (RatingBar) activity.findViewById(R.id.formulario_barra);
+        aluno = new Aluno();
 
     }
 
     //Criando o método
 
     public Aluno pegarAluno() {
-        Aluno aluno = new Aluno();
         aluno.setNome(campoNome.getText().toString());
         aluno.setEndereco(campoEndereco.getText().toString());
         aluno.setTelefone(campoTelefone.getText().toString());
@@ -43,5 +44,15 @@ public class FormularioHelper {
 
         return aluno;
 
+    }
+
+    ///Método para recuperar os dados do aluno no formulário
+    public void preencherFormulario(Aluno aluno) {
+        campoNome.setText(aluno.getNome());
+        campoEndereco.setText(aluno.getEndereco());
+        campoTelefone.setText(aluno.getTelefone());
+        campoSite.setText(aluno.getSite());
+        campoNota.setProgress(aluno.getNota().intValue());
+        this.aluno = aluno;
     }
 }

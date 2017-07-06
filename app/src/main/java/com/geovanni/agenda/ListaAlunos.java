@@ -59,13 +59,17 @@ public class ListaAlunos extends AppCompatActivity {
 
        viewListaAlunos = (ListView) findViewById(R.id.id_lista_alunos);
 
-        //Tratando clique no item clicado na lista
+        ///////////////////////////////Tratando clique no item clicado na lista/////////////////////////////////
 
        viewListaAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                Aluno aluno = (Aluno) viewListaAlunos.getItemAtPosition(position);
-               Toast.makeText(ListaAlunos.this, "Aluno " +aluno.getNome() +" clicado", Toast.LENGTH_LONG).show();
+
+               //Abrindo tela do cadastro do aluno
+               Intent intentVaiProFormulario = new Intent(ListaAlunos.this, FormularioActivity.class);
+               intentVaiProFormulario.putExtra("aluno", aluno);
+               startActivity(intentVaiProFormulario);
            }
        });
 
