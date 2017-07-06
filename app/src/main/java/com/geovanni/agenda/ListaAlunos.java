@@ -35,7 +35,7 @@ public class ListaAlunos extends AppCompatActivity {
 
         //Navegando entre telas
 
-         botaoAdicionar = (Button) findViewById(R.id.lista_aluno_adicionar);
+        botaoAdicionar = (Button) findViewById(R.id.lista_aluno_adicionar);
 
         botaoAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +58,18 @@ public class ListaAlunos extends AppCompatActivity {
         //Refenciar a activity onde a lista será exibida.
 
        viewListaAlunos = (ListView) findViewById(R.id.id_lista_alunos);
+
+        //Tratando clique no item clicado na lista
+
+       viewListaAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               Aluno aluno = (Aluno) viewListaAlunos.getItemAtPosition(position);
+               Toast.makeText(ListaAlunos.this, "Aluno " +aluno.getNome() +" clicado", Toast.LENGTH_LONG).show();
+           }
+       });
+
+
         //Adicionar os alunos na lista
         //android.R.layout.simple_list_item_1 = Lista Padrão Herdada do sys. Android.
         // alunos Array criado acima
