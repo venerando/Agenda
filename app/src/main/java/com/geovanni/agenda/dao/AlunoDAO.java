@@ -47,6 +47,12 @@ public class AlunoDAO extends SQLiteOpenHelper {
     public void insere(Aluno aluno) {
         SQLiteDatabase db = getWritableDatabase();
 
+        ContentValues dados = pegarDadosAluno(aluno);
+        db.insert("TB_Aluno", null,dados);
+
+    }
+
+    private ContentValues pegarDadosAluno(Aluno aluno) {
         ContentValues dados = new ContentValues();
 
         dados.put("nome", aluno.getNome());
@@ -54,8 +60,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
         dados.put("site", aluno.getSite());
         dados.put("telefone", aluno.getTelefone());
         dados.put("nota", aluno.getNota());
-        db.insert("TB_Aluno", null,dados);
-
+        return dados;
     }
 
     /// SELECT NO BANCO
@@ -89,5 +94,16 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
         String[] params = {aluno.getIdAluno().toString()};
         db.delete("TB_ALUNO", "id = ?", params);
+    }
+
+    //alterando dados aluno
+    public void altera(Aluno aluno) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues dados = pegarDadosAluno(aluno);
+
+        String[] params = {aluno.getIdAluno().toString()};
+        db.update("TB_ALUNO", dados, "id = ?", params);
+
     }
 }

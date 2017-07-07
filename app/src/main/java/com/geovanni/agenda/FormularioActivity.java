@@ -59,13 +59,23 @@ public class FormularioActivity extends AppCompatActivity {
                 //Recuperando informações digitadas pelo usuário através da Classe Aluno (Modelo)
                 Aluno aluno = helper.pegarAluno();
 
-                //Invocando o metódo com o insert para inserir os dados digitados pelo usuário no banco
                 AlunoDAO dao = new AlunoDAO(this);
+
+                //Alterando dados de aluno já cadastrado
+                if (aluno.getIdAluno()!= null){
+                    dao.altera(aluno);
+                //Exibe uma mensagem de sucesso ao alter os dados
+                  Toast.makeText(FormularioActivity.this, "Aluno " +aluno.getNome() + " alterado!", Toast.LENGTH_LONG).show();
+
+                } else{
+                 //Invocando o metódo com o insert para inserir os dados digitados pelo usuário no banco
                 dao.insere(aluno);
+                //Exibe uma mensagem de sucesso ao cadastrar
+                 Toast.makeText(FormularioActivity.this, "Aluno " +aluno.getNome() + " salvo!", Toast.LENGTH_LONG).show();
+                }
                 dao.close();
 
-                //Exibe uma mensagem de sucesso ao cadastrar
-                Toast.makeText(FormularioActivity.this, "Aluno " +aluno.getNome() + " salvo!", Toast.LENGTH_LONG).show();
+
 
                 //Faz retornar a tela anterior ao salvar
                 finish();
