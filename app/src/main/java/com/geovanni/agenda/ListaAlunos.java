@@ -1,6 +1,7 @@
 package com.geovanni.agenda;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -98,13 +99,36 @@ public class ListaAlunos extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
+
+       AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+       final Aluno aluno = (Aluno) viewListaAlunos.getItemAtPosition(info.position);
+
+        /*------------------------------------------------------------------------------------------
+        - Intent implicita
+        - Chamando o navegador para acessar um site
+         */
+
+        MenuItem itemSite = menu.add("Acessar Site");
+        Intent intentSite = new Intent(Intent.ACTION_VIEW);
+
+
+        //--------Adicionando http:// caso o usário não tenha digitado na hora do cadastro
+
+        String site = aluno.getSite();
+        if (!site.startsWith("http://")){
+            site = "http://" + site;
+        }
+
+        intentSite.setData(Uri.parse(site));
+        itemSite.setIntent(intentSite);
+
+
+        /*------------------------------------------------------------------------------------------*/
         MenuItem deletar = menu.add("Excluir");
 
         deletar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-                Aluno aluno = (Aluno) viewListaAlunos.getItemAtPosition(info.position);
 
                 AlunoDAO dao = new AlunoDAO(ListaAlunos.this);
                 dao.deletar(aluno);
