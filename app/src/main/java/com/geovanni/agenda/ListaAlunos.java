@@ -111,7 +111,6 @@ public class ListaAlunos extends AppCompatActivity {
         MenuItem itemSite = menu.add("Acessar Site");
         Intent intentSite = new Intent(Intent.ACTION_VIEW);
 
-
         //--------Adicionando http:// caso o usário não tenha digitado na hora do cadastro
 
         String site = aluno.getSite();
@@ -122,8 +121,29 @@ public class ListaAlunos extends AppCompatActivity {
         intentSite.setData(Uri.parse(site));
         itemSite.setIntent(intentSite);
 
+        /*------------------------------------------------------------------------------------------*/
+
+
+        /*------------------------------------------------------------------------------------------
+        -Enviando SMS
+        - Abrindo endereço do aluno mapa
+         */
+
+        //SMS
+        MenuItem itemSms = menu.add("Enviar SMS");
+        Intent intentSms = new Intent(Intent.ACTION_VIEW);
+        intentSms.setData(Uri.parse("sms:" +aluno.getTelefone()));
+        itemSms.setIntent(intentSms);
+
+        //Endereço
+
+        MenuItem itemMapa = menu.add("Visualizar no Mapa");
+        Intent intentMapa = new Intent(Intent.ACTION_VIEW);
+        intentMapa.setData(Uri.parse("geo:0.0?q=" + aluno.getEndereco()));
+        itemMapa.setIntent(intentMapa);
 
         /*------------------------------------------------------------------------------------------*/
+
         MenuItem deletar = menu.add("Excluir");
 
         deletar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
