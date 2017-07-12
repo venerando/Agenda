@@ -1,9 +1,12 @@
 package com.geovanni.agenda;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ActivityChooserView;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -19,9 +22,9 @@ import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
 
 import java.util.List;
+import java.util.jar.Manifest;
 
 import static android.R.attr.button;
-
 
 
 public class ListaAlunos extends AppCompatActivity {
@@ -58,21 +61,21 @@ public class ListaAlunos extends AppCompatActivity {
 
         //Refenciar a activity onde a lista será exibida.
 
-       viewListaAlunos = (ListView) findViewById(R.id.id_lista_alunos);
+        viewListaAlunos = (ListView) findViewById(R.id.id_lista_alunos);
 
         ///////////////////////////////Tratando clique no item clicado na lista/////////////////////////////////
 
-       viewListaAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-           @Override
-           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               Aluno aluno = (Aluno) viewListaAlunos.getItemAtPosition(position);
+        viewListaAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Aluno aluno = (Aluno) viewListaAlunos.getItemAtPosition(position);
 
-               //Abrindo tela do cadastro do aluno
-               Intent intentVaiProFormulario = new Intent(ListaAlunos.this, FormularioActivity.class);
-               intentVaiProFormulario.putExtra("aluno", aluno);
-               startActivity(intentVaiProFormulario);
-           }
-       });
+                //Abrindo tela do cadastro do aluno
+                Intent intentVaiProFormulario = new Intent(ListaAlunos.this, FormularioActivity.class);
+                intentVaiProFormulario.putExtra("aluno", aluno);
+                startActivity(intentVaiProFormulario);
+            }
+        });
 
 
         //Adicionar os alunos na lista
@@ -100,8 +103,8 @@ public class ListaAlunos extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
 
-       AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-       final Aluno aluno = (Aluno) viewListaAlunos.getItemAtPosition(info.position);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        final Aluno aluno = (Aluno) viewListaAlunos.getItemAtPosition(info.position);
 
         /*------------------------------------------------------------------------------------------
         - Intent implicita
@@ -114,7 +117,7 @@ public class ListaAlunos extends AppCompatActivity {
         //--------Adicionando http:// caso o usário não tenha digitado na hora do cadastro
 
         String site = aluno.getSite();
-        if (!site.startsWith("http://")){
+        if (!site.startsWith("http://")) {
             site = "http://" + site;
         }
 
@@ -132,7 +135,7 @@ public class ListaAlunos extends AppCompatActivity {
         //SMS
         MenuItem itemSms = menu.add("Enviar SMS");
         Intent intentSms = new Intent(Intent.ACTION_VIEW);
-        intentSms.setData(Uri.parse("sms:" +aluno.getTelefone()));
+        intentSms.setData(Uri.parse("sms:" + aluno.getTelefone()));
         itemSms.setIntent(intentSms);
 
         //Endereço
@@ -141,6 +144,37 @@ public class ListaAlunos extends AppCompatActivity {
         Intent intentMapa = new Intent(Intent.ACTION_VIEW);
         intentMapa.setData(Uri.parse("geo:0.0?q=" + aluno.getEndereco()));
         itemMapa.setIntent(intentMapa);
+
+        /*------------------------------------------------------------------------------------------*/
+
+
+        /*------------------------------------------------------------------------------------------
+        - Fazendo ligações
+        - Configurando as permissões necessárias para que seja efetuado a ligação.
+         */
+
+        //Ligações
+
+        MenuItem itemLigar = menu.add("Ligar");
+
+        itemLigar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                Intent intentLigar = new Intent(Intent.ACTION_CALL);
+                intentLigar.setData(Uri.parse("tel: " + aluno.getTelefone()));
+                if (ActivityCompat.checkSelfPermission(ListaAlunos.this, android.Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(ListaAlunos.this,
+                            new String[]{android.Manifest.permission.CALL_PHONE},123);
+                }
+                else {
+                    startActivity(intentLigar);
+                }
+                return false;
+            }
+        });
+
 
         /*------------------------------------------------------------------------------------------*/
 
