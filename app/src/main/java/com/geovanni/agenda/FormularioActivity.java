@@ -1,6 +1,8 @@
 package com.geovanni.agenda;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
 
+import java.io.File;
 import java.util.zip.Inflater;
 
 public class FormularioActivity extends AppCompatActivity {
@@ -35,6 +38,27 @@ public class FormularioActivity extends AppCompatActivity {
         if (aluno != null){
             helper.preencherFormulario(aluno);
         }
+
+        /*------------------------------------------------------------------------------------------
+        - Tirando uma foto para o casdatro do aluno
+         */
+
+        Button botaoFoto = (Button) findViewById(R.id.formulario_botao_foto);
+
+        botaoFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                String caminhoFoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
+                File arquivoFoto = new File(caminhoFoto);
+                intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));
+                startActivity(intentCamera);
+            }
+        });
+
+
+        /*------------------------------------------------------------------------------------------*/
+
 
     }
 

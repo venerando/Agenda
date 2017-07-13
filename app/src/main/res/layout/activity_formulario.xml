@@ -24,6 +24,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="16dp"
+                android:id="@+id/formulario_botao_foto"
                 />
 
         </RelativeLayout>
