@@ -1,6 +1,9 @@
 package com.geovanni.agenda;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
@@ -21,7 +25,9 @@ import java.util.zip.Inflater;
 public class FormularioActivity extends AppCompatActivity {
 
 
+    public static final int codigo_camera = 567;
     private FormularioHelper helper;
+    private String caminhoFoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +55,38 @@ public class FormularioActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                String caminhoFoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
+                caminhoFoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
                 File arquivoFoto = new File(caminhoFoto);
                 intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));
-                startActivity(intentCamera);
+                startActivityForResult(intentCamera, codigo_camera);
             }
         });
 
 
-        /*------------------------------------------------------------------------------------------*/
 
+
+        /*------------------------------------------------------------------------------------------*/
+    }
+
+    //Recuperando imagem
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == codigo_camera) {
+                ImageView foto = (ImageView) findViewById(R.id.formulario_foto);
+                Bitmap bitmap = BitmapFactory.decodeFile(caminhoFoto);
+                //Limitando tamanho imagem
+                Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
+                foto.setImageBitmap(bitmapReduzido);
+                //Imagem ocupando espaço total do ImageView
+                foto.setScaleType(ImageView.ScaleType.FIT_XY);
+            }
+
+        }
 
     }
+
 
     //Dgitar apenas onCreateOptionsMenu
 
