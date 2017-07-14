@@ -13,6 +13,7 @@ public class Aluno implements Serializable{
     private String telefone;
     private String site;
     private Double nota;
+    private String caminhoFoto;
 
     public Long getIdAluno() {
         return idAluno;
@@ -69,7 +70,15 @@ public class Aluno implements Serializable{
         return getNome();
     }
 
-   /*
+    public String getCaminhoFoto() {
+        return caminhoFoto;
+    }
+
+    public void setCaminhoFoto(String caminhoFoto) {
+        this.caminhoFoto = caminhoFoto;
+    }
+
+    /*
     Concatenar para exibir id + nome na lista
     @Override
 

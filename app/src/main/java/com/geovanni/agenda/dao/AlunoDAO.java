@@ -21,24 +21,30 @@ import java.util.List;
 public class AlunoDAO extends SQLiteOpenHelper {
 
     public AlunoDAO(Context context) {
-        super(context, "AgendaBD", null, 2);
+        super(context, "AgendaBD", null, 3);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String sql = ("CREATE TABLE TB_ALUNO (id INTEGER PRIMARY KEY, nome TEXT NOT NULL, endereco TEXT, telefone TEXT, site TEXT, nota REAL);");
+        String sql = ("CREATE TABLE TB_ALUNO (id INTEGER PRIMARY KEY, nome TEXT NOT NULL, endereco TEXT, telefone TEXT, site TEXT, nota REAL, caminhoFoto TEXT);");
         db.execSQL(sql);
     }
 
 
-    //Nesse caso quando algum campo ou tabela, versão for atualizada o Android irá apagar a tabela existente e criar uma nova.
+    //Nesse caso quando algum campo ou tabela, versão for atualizada o Android irá apenas adicionar a alteracao.
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS TB_ALUNO";
-        db.execSQL(sql);
-        onCreate(db);
+
+        String sql ="";
+
+        switch (oldVersion){
+            case 2:
+                    sql = "ALTER TABLE TB_ALUNO ADD COLUMN caminhoFoto TEXT";
+                db.execSQL(sql);
+        }
+
 
     }
 
@@ -60,6 +66,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
         dados.put("site", aluno.getSite());
         dados.put("telefone", aluno.getTelefone());
         dados.put("nota", aluno.getNota());
+        dados.put("caminhoFoto", aluno.getCaminhoFoto());
         return dados;
     }
 
@@ -80,6 +87,8 @@ public class AlunoDAO extends SQLiteOpenHelper {
             aluno.setSite(c.getString(c.getColumnIndex("site")));
             aluno.setTelefone(c.getString(c.getColumnIndex("telefone")));
             aluno.setNota(c.getDouble(c.getColumnIndex("nota")));
+            aluno.setCaminhoFoto(c.getString(c.getColumnIndex("caminhoFoto")));
+
 
             alunos.add(aluno);
         }
