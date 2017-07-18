@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.geovanni.agenda.adapter.AlunosAdapter;
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
 
@@ -82,9 +83,22 @@ public class ListaAlunos extends AppCompatActivity {
         //android.R.layout.simple_list_item_1 = Lista Padrão Herdada do sys. Android.
         // alunos Array criado acima
 
+        /*
         ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunos);
+        */
+
+         /*------------------------------------------------------------------------------------------
+        - Usando o proprio Adpter criado
+         */
+
+
+        AlunosAdapter adapter = new AlunosAdapter(this, alunos);
+
 
         viewListaAlunos.setAdapter(adapter);
+
+
+        /*------------------------------------------------------------------------------------------*/
 
         //Opção Para Deletar Aluno na Tela
         registerForContextMenu(viewListaAlunos);
