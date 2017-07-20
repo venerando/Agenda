@@ -111,6 +111,33 @@ public class ListaAlunos extends AppCompatActivity {
         carregaLista();
     }
 
+        /*------------------------------------------------------------------------------------------
+         - Criacao do menu para enviar as notas
+         */
+
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            getMenuInflater().inflate(R.menu.menu_lista_alunos,menu);
+
+            return true;
+        }
+
+         @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+
+            switch (item.getItemId()){
+                case R.id.menu_enviar_notas:
+                    Toast.makeText(this, "Enviando notas...",Toast.LENGTH_LONG).show();
+                    break;
+            }
+            return super.onOptionsItemSelected(item);
+
+
+        }
+
+        /*------------------------------------------------------------------------------------------*/
+
 
     //Opção Para Deletar Aluno na Tela - segundo forma de popular o menu
 
@@ -191,6 +218,8 @@ public class ListaAlunos extends AppCompatActivity {
 
 
         /*------------------------------------------------------------------------------------------*/
+
+
 
         MenuItem deletar = menu.add("Excluir");
 
