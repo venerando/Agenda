@@ -3,6 +3,7 @@
     package="com.geovanni.agenda">
 
     <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 
     <application
         android:allowBackup="true"
@@ -20,8 +21,13 @@
         </activity>
         <activity android:name=".FormularioActivity"
             android:label="Formulário">
-
         </activity>
-    </application>
 
+        <receiver android:name=".receiver.SMSReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"></action>
+            </intent-filter>
+        </receiver>
+
+        </application>
 </manifest>
