@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.geovanni.agenda.adapter.AlunosAdapter;
+import com.geovanni.agenda.converter.AlunoConverter;
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
 
@@ -128,7 +129,17 @@ public class ListaAlunos extends AppCompatActivity {
 
             switch (item.getItemId()){
                 case R.id.menu_enviar_notas:
-                    Toast.makeText(this, "Enviando notas...",Toast.LENGTH_LONG).show();
+
+                    AlunoDAO dao = new AlunoDAO(this);
+
+                    List<Aluno> alunos = dao.buscaAluno();
+                    dao.close();
+
+                    AlunoConverter conversor = new AlunoConverter();
+
+                    String json = conversor.convertParaJSON(alunos);
+
+                    Toast.makeText(this, json,Toast.LENGTH_LONG).show();
                     break;
             }
             return super.onOptionsItemSelected(item);
