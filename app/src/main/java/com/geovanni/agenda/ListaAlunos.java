@@ -130,16 +130,8 @@ public class ListaAlunos extends AppCompatActivity {
             switch (item.getItemId()){
                 case R.id.menu_enviar_notas:
 
-                    AlunoDAO dao = new AlunoDAO(this);
+                    new EnviaAlunoTask(this).execute();
 
-                    List<Aluno> alunos = dao.buscaAluno();
-                    dao.close();
-
-                    AlunoConverter conversor = new AlunoConverter();
-
-                    String json = conversor.convertParaJSON(alunos);
-
-                    Toast.makeText(this, json,Toast.LENGTH_LONG).show();
                     break;
             }
             return super.onOptionsItemSelected(item);
