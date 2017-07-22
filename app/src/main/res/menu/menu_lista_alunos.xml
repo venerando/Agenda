@@ -8,6 +8,12 @@
         android:id="@+id/menu_enviar_notas"
         android:title="Eviar notas"
         android:icon="@drawable/ic_enviar"
-        app:showAsAction="always"></item>
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_baixar_provas"
+        android:title="Baixar Provas"
+        android:icon="@drawable/ic_receber"
+        app:showAsAction="always"/>
 
 </menu>
