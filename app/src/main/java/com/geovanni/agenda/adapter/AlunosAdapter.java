@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.geovanni.agenda.ListaAlunos;
@@ -64,10 +65,18 @@ public class AlunosAdapter extends BaseAdapter {
         TextView campoTelefone =(TextView) view.findViewById(R.id.item_telefone);
             campoTelefone.setText(aluno.getTelefone());
 
-        TextView campoEndereco = (TextView) view.findViewById(R.id.item_endereco);
+       /* TextView campoEndereco = (TextView) view.findViewById(R.id.item_endereco);
         if (campoEndereco != null){
             campoEndereco.setText(aluno.getEndereco());
+        }*/
+
+       /*
+        RatingBar campoNota = (RatingBar) view.findViewById(R.id.item_nota);
+
+        if (campoNota !=null){
+            campoNota.setProgress(aluno.getNota().intValue());
         }
+        */
 
         TextView campoSite = (TextView) view.findViewById(R.id.item_site);
         if (campoSite !=null){
