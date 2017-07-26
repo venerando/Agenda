@@ -1,6 +1,9 @@
 package com.geovanni.agenda;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +14,6 @@ import android.widget.Toast;
 
 import com.geovanni.agenda.modelo.Prova;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,36 +24,13 @@ public class ProvasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provas);
 
-        List<String> topicosPort = Arrays.asList("Sujeito","Objeto","Objeto Indireto");
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
-        Prova provaPortugues = new Prova("Portugues", "25/09/2017", topicosPort);
+        FragmentTransaction tx = fragmentManager.beginTransaction();
 
-        List<String> topicosMat = Arrays.asList("Equacoes","Trigonometria");
-        Prova provaMatematica = new Prova("Matematica", "28/09/2017", topicosMat);
+        tx.replace(R.id.frame_principal, new ListaProvasFragment());
 
-        List<Prova> provas = Arrays.asList(provaPortugues,provaMatematica);
-
-        ArrayAdapter <Prova> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, provas);
-
-        ListView lista = (ListView) findViewById(R.id.provas_lista);
-
-        lista.setAdapter(adapter);
-
-        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-
-                Prova prova = (Prova) parent.getItemAtPosition(position);
-
-                Toast.makeText(ProvasActivity.this, "Clicou na prova de: " + prova, Toast.LENGTH_SHORT).show();
-
-                Intent vaiParaDetalhes = new Intent(ProvasActivity.this, DetalhesProvaActivity.class);
-
-                vaiParaDetalhes.putExtra("prova", prova);
-
-                startActivity(vaiParaDetalhes);
-            }
-        });
+        tx.commit();
 
 
     }
