@@ -30,8 +30,19 @@ public class ProvasActivity extends AppCompatActivity {
 
         tx.replace(R.id.frame_principal, new ListaProvasFragment());
 
+        if (estaNoModoPaisagem()){
+
+            tx.replace(R.id.frame_secundario, new DetalhesProvaFragment());
+        }
+
+
+
         tx.commit();
 
 
+    }
+
+    private boolean estaNoModoPaisagem() {
+        return getResources().getBoolean(R.bool.modoPaisagem);
     }
 }
