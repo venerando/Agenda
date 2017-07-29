@@ -64,6 +64,8 @@ public class ProvasActivity extends AppCompatActivity {
 
             tx.replace(R.id.frame_principal, detalhesFragment);
 
+            tx.addToBackStack(null);
+
             tx.commit();
 
         } else{
