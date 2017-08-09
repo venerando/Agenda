@@ -54,7 +54,8 @@ public class AlunoDAO extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues dados = pegarDadosAluno(aluno);
-        db.insert("TB_Aluno", null,dados);
+        long id = db.insert("TB_Aluno", null, dados);
+        aluno.setIdAluno(id);
 
     }
 
