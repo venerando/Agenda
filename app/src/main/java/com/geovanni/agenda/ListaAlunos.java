@@ -22,6 +22,7 @@ import com.geovanni.agenda.adapter.AlunosAdapter;
 import com.geovanni.agenda.converter.AlunoConverter;
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
+import com.geovanni.agenda.tasks.EnviaAlunoTask;
 
 import java.util.List;
 import java.util.jar.Manifest;

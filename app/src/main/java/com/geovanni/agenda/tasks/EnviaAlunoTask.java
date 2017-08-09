@@ -1,10 +1,11 @@
-package com.geovanni.agenda;
+package com.geovanni.agenda.tasks;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.geovanni.agenda.WebClient;
 import com.geovanni.agenda.converter.AlunoConverter;
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
