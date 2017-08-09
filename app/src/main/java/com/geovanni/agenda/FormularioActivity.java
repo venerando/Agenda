@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,10 +19,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
+import com.geovanni.agenda.retrofit.RetrofitInicializador;
 import com.geovanni.agenda.task.InsereAlunoTask;
 
 import java.io.File;
 import java.util.zip.Inflater;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FormularioActivity extends AppCompatActivity {
 
@@ -121,8 +127,23 @@ public class FormularioActivity extends AppCompatActivity {
                 dao.close();
 
 
-                new InsereAlunoTask(aluno).execute();
+               // new InsereAlunoTask(aluno).execute();
 
+                Call call = new RetrofitInicializador().getAlunoService().insere(aluno);
+
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) {
+                        Log.i("onResponse", "Requsicao com sucesso");
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+
+                        Log.e("onFailure", "Requisicao falhou" );
+
+                    }
+                });
 
 
                 //Faz retornar a tela anterior ao salvar
