@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.modelo.Aluno;
+import com.geovanni.agenda.task.InsereAlunoTask;
 
 import java.io.File;
 import java.util.zip.Inflater;
@@ -118,6 +119,9 @@ public class FormularioActivity extends AppCompatActivity {
                  Toast.makeText(FormularioActivity.this, "Aluno " +aluno.getNome() + " salvo!", Toast.LENGTH_LONG).show();
                 }
                 dao.close();
+
+
+                new InsereAlunoTask(aluno).execute();
 
 
 

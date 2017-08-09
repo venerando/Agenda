@@ -1,5 +1,7 @@
 package com.geovanni.agenda;
 
+import android.support.annotation.Nullable;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.HttpURLConnection;
@@ -14,38 +16,47 @@ import java.util.Scanner;
 public class WebClient {
 
     public String post (String json){
+
+        String endereco = "https://www.caelum.com.br/mobile";
+
+        return realizaConexao(json, endereco);
+
+    }
+
+    public void insere(String json) {
+
+        String endereco = "http://192.168.0.30:8080/api/aluno";
+
+        realizaConexao(json,endereco);
+    }
+
+
+
+    @Nullable
+
+    public String realizaConexao(String json, String endereco){
         try {
-            URL url = new URL("https://www.caelum.com.br/mobile");
-
+            URL url = new URL(endereco);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
             connection.setRequestProperty("Content-type", "application/json");
-
-            connection.setRequestProperty("Acept","application/json");
-
-            PrintStream output = new PrintStream(connection.getOutputStream());
-
+            connection.setRequestProperty("Accept", "application/json");
 
             connection.setDoOutput(true);
 
+            PrintStream output = new PrintStream(connection.getOutputStream());
             output.println(json);
 
             connection.connect();
 
-            Scanner scanner = new Scanner (connection.getInputStream());
-
+            Scanner scanner = new Scanner(connection.getInputStream());
             String resposta = scanner.next();
-
             return resposta;
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
-
     }
 
 }
