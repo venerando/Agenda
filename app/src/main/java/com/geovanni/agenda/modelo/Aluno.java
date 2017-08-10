@@ -10,8 +10,7 @@ import java.io.Serializable;
 
 public class Aluno implements Serializable{
 
-    @JsonProperty("idCliente")
-    private Long idAluno;
+    private String idAluno;
     private String nome;
     private String endereco;
     private String telefone;
@@ -19,11 +18,11 @@ public class Aluno implements Serializable{
     private Double nota;
     private String caminhoFoto;
 
-    public Long getIdAluno() {
+    public String getIdAluno() {
         return idAluno;
     }
 
-    public void setIdAluno(Long idAluno) {
+    public void setIdAluno(String idAluno) {
         this.idAluno = idAluno;
     }
 
