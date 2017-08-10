@@ -21,7 +21,7 @@ import java.util.List;
 public class AlunoDAO extends SQLiteOpenHelper {
 
     public AlunoDAO(Context context) {
-        super(context, "AgendaBD", null, 3);
+        super(context, "AgendaBD", null, 4);
     }
 
     @Override
@@ -43,8 +43,34 @@ public class AlunoDAO extends SQLiteOpenHelper {
             case 2:
                     sql = "ALTER TABLE TB_ALUNO ADD COLUMN caminhoFoto TEXT";
                 db.execSQL(sql);
-        }
 
+            case 3:
+
+                String criandoTableNova = ("CREATE TABLE TB_ALUNO_NOVO (id CHAR(36) PRIMARY KEY," +
+                        " nome TEXT NOT NULL, " +
+                        "endereco TEXT, " +
+                        "telefone TEXT, " +
+                        "site TEXT, " +
+                        "nota REAL, " +
+                        "caminhoFoto TEXT);");
+                db.execSQL(criandoTableNova);
+
+                String migrandoDados = "INSERT INTO TB_ALUNO_NOVO " +
+                        "(id, nome, endereco, telefone, site, nota, caminhoFoto) " +
+                        "SELECT id, nome, endereco, telefone, site, nota, caminhoFoto FROM TB_ALUNO";
+
+                db.execSQL(migrandoDados);
+
+                String removendoTabelaAntiga = "DROP TABLE TB_ALUNO";
+
+                db.execSQL(removendoTabelaAntiga);
+
+                String alteraNomeTabela = "ALTER TABLE TB_ALUNO_NOVO " +
+                        "RENAME TO TB_ALUNO";
+
+                db.execSQL(alteraNomeTabela);
+
+        }
 
     }
 

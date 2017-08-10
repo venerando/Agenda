@@ -60,6 +60,7 @@ public class ListaAlunos extends AppCompatActivity {
     private void carregaLista() {
         AlunoDAO dao = new AlunoDAO(this);
         List<Aluno> alunos = dao.buscaAluno();
+
         dao.close();
 
         //Refenciar a activity onde a lista será exibida.
