@@ -1,5 +1,6 @@
 package com.geovanni.agenda.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -8,9 +9,12 @@ import java.io.Serializable;
  * Created by Geovanni on 29/06/2017.
  */
 
+//@JsonIgnoreProperties  (ignoreUnknown = true) para ignorar propriedades que existem no JSON, mas nao existe no modelo
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Aluno implements Serializable{
 
-    private String idAluno;
+    private String id;
     private String nome;
     private String endereco;
     private String telefone;
@@ -18,12 +22,12 @@ public class Aluno implements Serializable{
     private Double nota;
     private String caminhoFoto;
 
-    public String getIdAluno() {
-        return idAluno;
+    public String getId() {
+        return id;
     }
 
-    public void setIdAluno(String idAluno) {
-        this.idAluno = idAluno;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNome() {

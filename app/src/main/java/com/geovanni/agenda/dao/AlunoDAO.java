@@ -40,11 +40,11 @@ public class AlunoDAO extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        String sql ="";
+        String sql = "";
 
-        switch (oldVersion){
+        switch (oldVersion) {
             case 2:
-                    sql = "ALTER TABLE TB_ALUNO ADD COLUMN caminhoFoto TEXT";
+                sql = "ALTER TABLE TB_ALUNO ADD COLUMN caminhoFoto TEXT";
                 db.execSQL(sql);
 
             case 3:
@@ -83,9 +83,9 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
                 String atualizaIdDoAluno = "UPDATE TB_ALUNO SET id =? WHERE id=?";
 
-                for (Aluno aluno: alunos
-                     ) {
-                    db.execSQL(atualizaIdDoAluno, new String[] {geraUUID(),aluno.getIdAluno()});
+                for (Aluno aluno : alunos
+                        ) {
+                    db.execSQL(atualizaIdDoAluno, new String[]{geraUUID(), aluno.getId()});
                 }
 
         }
@@ -100,15 +100,24 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
     public void insere(Aluno aluno) {
         SQLiteDatabase db = getWritableDatabase();
-        aluno.setIdAluno(geraUUID());
+
+        insereIdSeNecessario(aluno);
+
+        aluno.setId(geraUUID());
         ContentValues dados = pegarDadosAluno(aluno);
         db.insert("TB_Aluno", null, dados);
 
     }
 
+    private void insereIdSeNecessario(Aluno aluno) {
+        if (aluno.getId() == null) {
+            aluno.setId(geraUUID());
+        }
+    }
+
     private ContentValues pegarDadosAluno(Aluno aluno) {
         ContentValues dados = new ContentValues();
-        dados.put("id", aluno.getIdAluno());
+        dados.put("id", aluno.getId());
         dados.put("nome", aluno.getNome());
         dados.put("endereco", aluno.getEndereco());
         dados.put("site", aluno.getSite());
@@ -123,7 +132,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
     public List<Aluno> buscaAluno() {
         String sql = "SELECT * FROM TB_ALUNO;";
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery(sql,null);
+        Cursor c = db.rawQuery(sql, null);
 
         List<Aluno> alunos = populaAlunos(c);
         //liberar memoria
@@ -134,10 +143,10 @@ public class AlunoDAO extends SQLiteOpenHelper {
     @NonNull
     private List<Aluno> populaAlunos(Cursor c) {
         List<Aluno> alunos = new ArrayList<Aluno>();
-        while (c.moveToNext()){
+        while (c.moveToNext()) {
             Aluno aluno = new Aluno();
 
-            aluno.setIdAluno(c.getString(c.getColumnIndex("id")));
+            aluno.setId(c.getString(c.getColumnIndex("id")));
             aluno.setNome(c.getString(c.getColumnIndex("nome")));
             aluno.setEndereco(c.getString(c.getColumnIndex("endereco")));
             aluno.setSite(c.getString(c.getColumnIndex("site")));
@@ -155,7 +164,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        String[] params = {aluno.getIdAluno().toString()};
+        String[] params = {aluno.getId()};
         db.delete("TB_ALUNO", "id = ?", params);
     }
 
@@ -165,19 +174,49 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
         ContentValues dados = pegarDadosAluno(aluno);
 
-        String[] params = {aluno.getIdAluno().toString()};
+        String[] params = {aluno.getId()};
         db.update("TB_ALUNO", dados, "id = ?", params);
 
     }
 
 
-    public boolean ehAluno (String telefone){
+    public boolean ehAluno(String telefone) {
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor c = db.rawQuery("SELECT * FROM TB_ALUNO WHERE telefone = ?", new String[]{telefone});
         int resultados = c.getCount();
         c.close();
         return resultados > 0;
+
+    }
+
+
+    public void sincroniza(List<Aluno> alunos) {
+        for (Aluno aluno:alunos
+             ) {
+
+            if (existe(aluno)){
+                altera(aluno);
+            }
+
+            else {
+                insere(aluno);
+            }
+        }
+    }
+
+
+
+    private boolean existe(Aluno aluno) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String existe = "SELECT id FROM TB_ALUNO WHERE ID = ? LIMIT 1";
+
+        Cursor cursor = db.rawQuery(existe, new String[]{aluno.getId()});
+
+        int quantidade  = cursor.getCount();
+
+        return quantidade > 0;
 
     }
 }

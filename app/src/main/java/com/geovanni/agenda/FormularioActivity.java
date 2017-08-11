@@ -107,7 +107,7 @@ public class FormularioActivity extends AppCompatActivity {
                 AlunoDAO dao = new AlunoDAO(this);
 
                 //Alterando dados de aluno já cadastrado
-                if (aluno.getIdAluno()!= null){
+                if (aluno.getId()!= null){
                     dao.altera(aluno);
                 //Exibe uma mensagem de sucesso ao alter os dados
                   Toast.makeText(FormularioActivity.this, "Aluno " +aluno.getNome() + " alterado!", Toast.LENGTH_LONG).show();

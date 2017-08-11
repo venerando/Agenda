@@ -6,29 +6,28 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ActivityChooserView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.geovanni.agenda.adapter.AlunosAdapter;
-import com.geovanni.agenda.converter.AlunoConverter;
 import com.geovanni.agenda.dao.AlunoDAO;
+import com.geovanni.agenda.dto.AlunoSync;
 import com.geovanni.agenda.modelo.Aluno;
+import com.geovanni.agenda.retrofit.RetrofitInicializador;
 import com.geovanni.agenda.tasks.EnviaAlunoTask;
 
 import java.util.List;
-import java.util.jar.Manifest;
 
-import static android.R.attr.button;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class ListaAlunos extends AppCompatActivity {
@@ -39,6 +38,7 @@ public class ListaAlunos extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_lista_alunos);
 
         //Navegando entre telas
@@ -64,7 +64,7 @@ public class ListaAlunos extends AppCompatActivity {
 
         for (Aluno aluno: alunos
              ) {
-            Log.i("id do aluno", String.valueOf(aluno.getIdAluno()));
+            Log.i("id do aluno", String.valueOf(aluno.getId()));
         }
 
         dao.close();
@@ -113,10 +113,27 @@ public class ListaAlunos extends AppCompatActivity {
         registerForContextMenu(viewListaAlunos);
     }
 
-    @Override
     protected void onResume() {
         super.onResume();
-        //Método criado clicando botão direito Refactor > Extract > Method
+
+        Call<AlunoSync> call = new RetrofitInicializador().getAlunoService().lista();
+        call.enqueue(new Callback<AlunoSync>() {
+            @Override
+            public void onResponse(Call<AlunoSync> call, Response<AlunoSync> response) {
+                AlunoSync alunosSync = response.body();
+                AlunoDAO dao = new AlunoDAO(ListaAlunos.this);
+                dao.sincroniza(alunosSync.getAlunos());
+
+                dao.close();
+                carregaLista();
+            }
+
+            @Override
+            public void onFailure(Call<AlunoSync> call, Throwable t) {
+                Log.e("onFailure", t.getMessage());
+            }
+        });
+
         carregaLista();
     }
 
