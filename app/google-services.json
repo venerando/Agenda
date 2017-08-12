@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "329650962213",
+    "firebase_url": "https://agenda-eb9bf.firebaseio.com",
+    "project_id": "agenda-eb9bf",
+    "storage_bucket": "agenda-eb9bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329650962213:android:bce104d3ba452c89",
+        "android_client_info": {
+          "package_name": "com.geovanni.agenda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329650962213-r5ielbcfgb6aun4q894i6hk6f6vckh5r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.geovanni.agenda",
+            "certificate_hash": "a911a5357b4c11dcde9f5d0b055d7b5126e8eb1c"
+          }
+        },
+        {
+          "client_id": "329650962213-qjrtha7h8g9vitnaqd2ltueqro9fviq5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvxiFqPqMetRNlFgd1q3gEGkyhjQ-eOHw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329650962213-qjrtha7h8g9vitnaqd2ltueqro9fviq5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
