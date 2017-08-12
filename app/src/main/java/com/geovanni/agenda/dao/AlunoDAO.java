@@ -100,12 +100,9 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
     public void insere(Aluno aluno) {
         SQLiteDatabase db = getWritableDatabase();
-
         insereIdSeNecessario(aluno);
-
-        aluno.setId(geraUUID());
         ContentValues dados = pegarDadosAluno(aluno);
-        db.insert("TB_Aluno", null, dados);
+        db.insert("TB_ALUNO", null, dados);
 
     }
 
@@ -192,8 +189,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
 
     public void sincroniza(List<Aluno> alunos) {
-        for (Aluno aluno:alunos
-             ) {
+        for (Aluno aluno : alunos) {
 
             if (existe(aluno)){
                 altera(aluno);
@@ -206,11 +202,10 @@ public class AlunoDAO extends SQLiteOpenHelper {
     }
 
 
-
     private boolean existe(Aluno aluno) {
         SQLiteDatabase db = getReadableDatabase();
 
-        String existe = "SELECT id FROM TB_ALUNO WHERE ID = ? LIMIT 1";
+        String existe = "SELECT id FROM TB_ALUNO WHERE id=? LIMIT 1";
 
         Cursor cursor = db.rawQuery(existe, new String[]{aluno.getId()});
 

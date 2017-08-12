@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,12 +35,23 @@ public class ListaAlunos extends AppCompatActivity {
 
     private ListView viewListaAlunos;
     private Button botaoAdicionar;
+    private SwipeRefreshLayout swipe;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_lista_alunos);
+
+        swipe = (SwipeRefreshLayout) findViewById(R.id.lista_alunos_swipe);
+
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                buscaAlunos();
+            }
+        });
 
         //Navegando entre telas
 
@@ -51,11 +63,10 @@ public class ListaAlunos extends AppCompatActivity {
                 Intent intent = new Intent(ListaAlunos.this, FormularioActivity.class);
                 startActivity(intent);
                 ;
-                buscaAlunos();
             }
         });
 
-
+        buscaAlunos();
     }
 
     //Alterando busca statica no array para busca no BD.
@@ -67,6 +78,7 @@ public class ListaAlunos extends AppCompatActivity {
              ) {
             Log.i("id do aluno", String.valueOf(aluno.getId()));
         }
+
 
         dao.close();
 
@@ -110,11 +122,14 @@ public class ListaAlunos extends AppCompatActivity {
 
         /*------------------------------------------------------------------------------------------*/
 
+
         //Opção Para Deletar Aluno na Tela
         registerForContextMenu(viewListaAlunos);
 
 
     }
+
+
 
     protected void onResume() {
         super.onResume();
@@ -130,14 +145,15 @@ public class ListaAlunos extends AppCompatActivity {
                 AlunoSync alunosSync = response.body();
                 AlunoDAO dao = new AlunoDAO(ListaAlunos.this);
                 dao.sincroniza(alunosSync.getAlunos());
-
                 dao.close();
                 carregaLista();
+                swipe.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<AlunoSync> call, Throwable t) {
                 Log.e("onFailure", t.getMessage());
+                swipe.setRefreshing(false);
             }
         });
     }
