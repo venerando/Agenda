@@ -51,6 +51,7 @@ public class ListaAlunos extends AppCompatActivity {
                 Intent intent = new Intent(ListaAlunos.this, FormularioActivity.class);
                 startActivity(intent);
                 ;
+                buscaAlunos();
             }
         });
 
@@ -111,11 +112,17 @@ public class ListaAlunos extends AppCompatActivity {
 
         //Opção Para Deletar Aluno na Tela
         registerForContextMenu(viewListaAlunos);
+
+
     }
 
     protected void onResume() {
         super.onResume();
 
+        carregaLista();
+    }
+
+    private void buscaAlunos() {
         Call<AlunoSync> call = new RetrofitInicializador().getAlunoService().lista();
         call.enqueue(new Callback<AlunoSync>() {
             @Override
@@ -133,8 +140,6 @@ public class ListaAlunos extends AppCompatActivity {
                 Log.e("onFailure", t.getMessage());
             }
         });
-
-        carregaLista();
     }
 
         /*------------------------------------------------------------------------------------------
@@ -269,13 +274,27 @@ public class ListaAlunos extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                AlunoDAO dao = new AlunoDAO(ListaAlunos.this);
-                dao.deletar(aluno);
-                dao.close();
+                Call<Void> call = new RetrofitInicializador().getAlunoService().deleta(aluno.getId());
 
-                Toast.makeText(ListaAlunos.this, "Aluno " + aluno.getNome() + " deletado!", Toast.LENGTH_SHORT).show();
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
 
-                carregaLista();
+                        AlunoDAO dao = new AlunoDAO(ListaAlunos.this);
+                        dao.deletar(aluno);
+                        dao.close();
+
+                        Toast.makeText(ListaAlunos.this, "Aluno " + aluno.getNome() + " deletado!", Toast.LENGTH_SHORT).show();
+                        carregaLista();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(ListaAlunos.this, "Erro ao deletar aluno!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
                 return false;
             }
         });
