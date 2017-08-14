@@ -2,6 +2,7 @@ package com.geovanni.agenda.retrofit;
 
 
 import com.geovanni.agenda.services.AlunoService;
+import com.geovanni.agenda.services.DispositivoService;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -26,7 +27,7 @@ public class RetrofitInicializador {
 
         client.addInterceptor(interceptor);
 
-        retrofit = new Retrofit.Builder().baseUrl("http://192.168.0.30:8080/api/")
+        retrofit = new Retrofit.Builder().baseUrl("http://192.168.15.8:8080/api/")
                 .addConverterFactory(JacksonConverterFactory.create())
                 .client(client.build())
                 .build();
@@ -36,5 +37,9 @@ public class RetrofitInicializador {
 
         return retrofit.create(AlunoService.class);
 
+    }
+
+    public DispositivoService getDispositivoService() {
+        return retrofit.create(DispositivoService.class);
     }
 }
