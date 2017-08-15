@@ -19,10 +19,10 @@ import android.widget.Toast;
 
 import com.geovanni.agenda.adapter.AlunosAdapter;
 import com.geovanni.agenda.dao.AlunoDAO;
-import com.geovanni.agenda.dto.AlunoSync;
 import com.geovanni.agenda.event.AtualizaListaAlunoEvent;
 import com.geovanni.agenda.modelo.Aluno;
 import com.geovanni.agenda.retrofit.RetrofitInicializador;
+import com.geovanni.agenda.sinc.AlunoSincronizador;
 import com.geovanni.agenda.tasks.EnviaAlunoTask;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,6 +38,7 @@ import retrofit2.Response;
 
 public class ListaAlunos extends AppCompatActivity {
 
+    private final AlunoSincronizador sincronizador = new AlunoSincronizador(this);
     private ListView viewListaAlunos;
     private Button botaoAdicionar;
     private SwipeRefreshLayout swipe;
@@ -58,7 +59,7 @@ public class ListaAlunos extends AppCompatActivity {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                buscaAlunos();
+                sincronizador.buscaAlunos();
             }
         });
 
@@ -75,7 +76,7 @@ public class ListaAlunos extends AppCompatActivity {
             }
         });
 
-        buscaAlunos();
+        sincronizador.buscaAlunos();
     }
 
     //Alterando busca statica no array para busca no BD.
@@ -142,6 +143,8 @@ public class ListaAlunos extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void atualizaListaAlunoEvent (AtualizaListaAlunoEvent event){
 
+        if (swipe.isRefreshing()) swipe.setRefreshing(false);
+
         carregaLista();
 
     }
@@ -153,24 +156,7 @@ public class ListaAlunos extends AppCompatActivity {
     }
 
     private void buscaAlunos() {
-        Call<AlunoSync> call = new RetrofitInicializador().getAlunoService().lista();
-        call.enqueue(new Callback<AlunoSync>() {
-            @Override
-            public void onResponse(Call<AlunoSync> call, Response<AlunoSync> response) {
-                AlunoSync alunosSync = response.body();
-                AlunoDAO dao = new AlunoDAO(ListaAlunos.this);
-                dao.sincroniza(alunosSync.getAlunos());
-                dao.close();
-                carregaLista();
-                swipe.setRefreshing(false);
-            }
-
-            @Override
-            public void onFailure(Call<AlunoSync> call, Throwable t) {
-                Log.e("onFailure", t.getMessage());
-                swipe.setRefreshing(false);
-            }
-        });
+        sincronizador.buscaAlunos();
     }
 
         /*------------------------------------------------------------------------------------------
