@@ -86,7 +86,7 @@ public class ListaAlunos extends AppCompatActivity {
 
         for (Aluno aluno: alunos
              ) {
-            Log.i("id do aluno", String.valueOf(aluno.getId()));
+            Log.i("aluno sincronizado", String.valueOf(aluno.getSincronizado()));
         }
 
 
