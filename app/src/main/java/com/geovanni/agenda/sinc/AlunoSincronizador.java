@@ -7,6 +7,7 @@ import com.geovanni.agenda.ListaAlunos;
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.dto.AlunoSync;
 import com.geovanni.agenda.event.AtualizaListaAlunoEvent;
+import com.geovanni.agenda.preferences.AlunoPreferences;
 import com.geovanni.agenda.retrofit.RetrofitInicializador;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,9 +30,18 @@ public class AlunoSincronizador {
             @Override
             public void onResponse(Call<AlunoSync> call, Response<AlunoSync> response) {
                 AlunoSync alunosSync = response.body();
+                String versao = alunosSync.getMomentoDaUltimaModificacao();
+
+                AlunoPreferences preferences = new AlunoPreferences(context);
+
+                preferences.salvaVersao(versao);
+
                 AlunoDAO dao = new AlunoDAO(context);
                 dao.sincroniza(alunosSync.getAlunos());
                 dao.close();
+
+                Log.i("versao", preferences.getVesao());
+                
                 bus.post(new AtualizaListaAlunoEvent());
             }
 
