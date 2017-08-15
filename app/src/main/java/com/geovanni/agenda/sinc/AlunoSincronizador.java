@@ -1,9 +1,9 @@
 package com.geovanni.agenda.sinc;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.geovanni.agenda.ListaAlunos;
 import com.geovanni.agenda.dao.AlunoDAO;
 import com.geovanni.agenda.dto.AlunoSync;
 import com.geovanni.agenda.event.AtualizaListaAlunoEvent;
@@ -19,20 +19,41 @@ import retrofit2.Response;
 public class AlunoSincronizador {
     private final Context context;
     private EventBus bus = EventBus.getDefault();
+    private AlunoPreferences preferences;
 
     public AlunoSincronizador(Context context) {
         this.context = context;
+        preferences = new AlunoPreferences(context);
     }
 
-    public void buscaAlunos() {
+    public void buscaTodos(){
+        if (preferences.temVersao()){
+            buscaNovos();
+        } else {
+            buscaAlunos();
+        }
+        
+    }
+
+    private void buscaNovos() {
+        String versao = preferences.getVersao();
+        Call<AlunoSync> call = new RetrofitInicializador().getAlunoService().novos(versao);
+
+        call.enqueue(buscaAlunosCallback());
+    }
+
+    private void buscaAlunos() {
         Call<AlunoSync> call = new RetrofitInicializador().getAlunoService().lista();
-        call.enqueue(new Callback<AlunoSync>() {
+        call.enqueue(buscaAlunosCallback());
+    }
+
+    @NonNull
+    private Callback<AlunoSync> buscaAlunosCallback() {
+        return new Callback<AlunoSync>() {
             @Override
             public void onResponse(Call<AlunoSync> call, Response<AlunoSync> response) {
                 AlunoSync alunosSync = response.body();
                 String versao = alunosSync.getMomentoDaUltimaModificacao();
-
-                AlunoPreferences preferences = new AlunoPreferences(context);
 
                 preferences.salvaVersao(versao);
 
@@ -40,8 +61,8 @@ public class AlunoSincronizador {
                 dao.sincroniza(alunosSync.getAlunos());
                 dao.close();
 
-                Log.i("versao", preferences.getVesao());
-                
+                Log.i("versao", preferences.getVersao());
+
                 bus.post(new AtualizaListaAlunoEvent());
             }
 
@@ -50,6 +71,6 @@ public class AlunoSincronizador {
                 Log.e("onFailure", t.getMessage());
                 bus.post(new AtualizaListaAlunoEvent());
             }
-        });
+        };
     }
 }

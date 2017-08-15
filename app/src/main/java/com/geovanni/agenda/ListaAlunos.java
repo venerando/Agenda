@@ -59,7 +59,7 @@ public class ListaAlunos extends AppCompatActivity {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                sincronizador.buscaAlunos();
+                sincronizador.buscaTodos();
             }
         });
 
@@ -76,7 +76,7 @@ public class ListaAlunos extends AppCompatActivity {
             }
         });
 
-        sincronizador.buscaAlunos();
+        sincronizador.buscaTodos();
     }
 
     //Alterando busca statica no array para busca no BD.
@@ -155,9 +155,6 @@ public class ListaAlunos extends AppCompatActivity {
         carregaLista();
     }
 
-    private void buscaAlunos() {
-        sincronizador.buscaAlunos();
-    }
 
         /*------------------------------------------------------------------------------------------
          - Criacao do menu para enviar as notas

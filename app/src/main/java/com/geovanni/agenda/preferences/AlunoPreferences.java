@@ -32,10 +32,14 @@ public class AlunoPreferences {
         return context.getSharedPreferences(ALUNO_PREFERECES, context.MODE_PRIVATE);
     }
 
-    public String getVesao() {
+    public String getVersao() {
 
         SharedPreferences preferences = getSharedPreferences();
 
         return preferences.getString(VERSAO_DO_DADO, "");
+    }
+
+    public boolean temVersao() {
+        return !getVersao().isEmpty();
     }
 }
